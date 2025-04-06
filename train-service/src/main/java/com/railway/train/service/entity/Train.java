@@ -9,9 +9,7 @@ import java.time.LocalTime;
 
 @Entity
 @Data
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
+
 public class Train {
 
     @Id
@@ -29,4 +27,7 @@ public class Train {
     private LocalTime arrivalTime;
 
     private double fare;
+
+    private int availableSeats;
+
 }

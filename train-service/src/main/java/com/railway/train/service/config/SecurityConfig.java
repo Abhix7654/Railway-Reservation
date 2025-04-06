@@ -1,5 +1,6 @@
 package com.railway.train.service.config;
 
+import jakarta.ws.rs.HttpMethod;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,7 +26,8 @@ public class SecurityConfig {
         return http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/trains/all", "/api/trains/get/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/trains/updateSeats/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/trains/get/**", "/api/trains/all").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

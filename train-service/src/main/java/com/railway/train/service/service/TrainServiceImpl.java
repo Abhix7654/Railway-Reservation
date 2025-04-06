@@ -44,6 +44,8 @@ public class TrainServiceImpl implements TrainService {
         existing.setDestination(train.getDestination());
         existing.setDepartureTime(train.getDepartureTime());
         existing.setArrivalTime(train.getArrivalTime());
+        existing.setFare(train.getFare());
+        existing.setAvailableSeats(train.getAvailableSeats());
        trainRepository.save(existing);
         return "Updated Sucessfully";
     }
@@ -52,4 +54,13 @@ public class TrainServiceImpl implements TrainService {
         return trainRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Train not found with id: " + id));
     }
+    @Override
+    public void updateAvailableSeats(Long id, int availableSeats) {
+        Train train = trainRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Train not found with id: " + id));
+        train.setAvailableSeats(availableSeats);
+        trainRepository.save(train);
+    }
+
+
 }

@@ -12,6 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/trains")
+@CrossOrigin(origins = "*")
+
 public class TrainController {
 
     @Autowired
@@ -49,4 +51,14 @@ public class TrainController {
         Train train = trainService.getTrainById(id);
         return ResponseEntity.ok(train);
     }
+
+    @PutMapping("updateSeats/{id}")
+    public ResponseEntity<String> updateAvailableSeats(
+            @PathVariable("id") Long trainId,
+            @RequestParam("seats") int seats) {
+
+        trainService.updateAvailableSeats(trainId, seats);  // This method should update the DB
+        return ResponseEntity.ok("Seats updated successfully");
+    }
+
 }

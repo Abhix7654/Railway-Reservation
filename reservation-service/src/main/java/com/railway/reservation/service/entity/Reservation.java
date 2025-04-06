@@ -1,11 +1,16 @@
 package com.railway.reservation.service.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "reservations")
 public class Reservation {
@@ -24,18 +29,10 @@ public class Reservation {
 
     private String status;
 
+    @Column(unique = true)
     private String pnr;
 
-    public Reservation() {}
 
-    public Reservation(Long userId, Long trainId, LocalDate travelDate, int numberOfSeats, String status, String pnr) {
-        this.userId = userId;
-        this.trainId = trainId;
-        this.travelDate = travelDate;
-        this.numberOfSeats = numberOfSeats;
-        this.status = status;
-        this.pnr = pnr;
-    }
-
-
+    @CreationTimestamp
+    private LocalDate reservationDate;
 }

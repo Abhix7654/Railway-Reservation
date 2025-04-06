@@ -10,4 +10,5 @@ public interface TrainService {
     String deleteTrain(Long id);
     String updateTrain(Long id, Train train);
     Train getTrainById(Long id);
+    void updateAvailableSeats(Long id, int availableSeats);
 }
