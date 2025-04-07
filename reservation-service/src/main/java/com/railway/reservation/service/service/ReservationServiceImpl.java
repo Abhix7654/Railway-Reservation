@@ -23,19 +23,15 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation bookReservation(Reservation reservation) {
         reservation.setReservationDate(LocalDate.now());
+        reservation.setStatus("PENDING");
+        Train train = trainClient.getTrainById(reservation.getTrainId());
 
+        double totalFare = train.getFare() * reservation.getNumberOfSeats();
+        reservation.setFare(totalFare);
         String pnr = "PNR-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         reservation.setPnr(pnr);
 
-        Train train = trainClient.getTrainById(reservation.getTrainId());
 
-        if (train.getAvailableSeats() >= reservation.getNumberOfSeats()) {
-            trainClient.updateAvailableSeats(reservation.getTrainId(),
-                    train.getAvailableSeats() - reservation.getNumberOfSeats());
-            reservation.setStatus("CONFIRMED");
-        } else {
-            reservation.setStatus("WAITING");
-        }
 
         return repository.save(reservation);
     }
@@ -64,5 +60,28 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setStatus("CANCELLED");
         repository.save(reservation);
         return "Reservation cancelled successfully";
+
+    }
+
+    @Override
+    public void updateStatusAfterPayment(Long id){
+        Reservation reservation = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reservation not found with ID: " + id));
+
+        Train train = trainClient.getTrainById(reservation.getTrainId());
+        if (train == null) {
+            throw new RuntimeException("Train not found with ID: " + reservation.getTrainId());
+        }
+
+        if (train.getAvailableSeats() >= reservation.getNumberOfSeats()) {
+            trainClient.updateAvailableSeats(reservation.getTrainId(),
+                    train.getAvailableSeats() - reservation.getNumberOfSeats());
+            reservation.setStatus("CONFIRMED");
+        } else {
+            reservation.setStatus("WAITING");
+        }
+
+      repository.save(reservation);
+
     }
 }

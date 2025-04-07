@@ -8,4 +8,5 @@ public class Train {
     private Long id;
     private String name;
     private int availableSeats;
+    private double fare;
 }

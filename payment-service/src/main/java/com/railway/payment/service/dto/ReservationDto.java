@@ -8,4 +8,6 @@ public class ReservationDto {
     private Long userId;
     private Long trainId;
     private String status;
+    private double fare;
+
 }

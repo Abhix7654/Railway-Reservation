@@ -1,6 +1,7 @@
 package com.railway.reservation.service.controller;
 
 
+import com.railway.reservation.service.dto.Train;
 import com.railway.reservation.service.entity.Reservation;
 import com.railway.reservation.service.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,10 @@ public class ReservationController {
     public ResponseEntity<String> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(service.cancelReservation(id));
     }
+    @PutMapping("/status/{id}")
+    public ResponseEntity<String> updateStatus(@PathVariable Long id) {
+        service.updateStatusAfterPayment(id);
+        return ResponseEntity.ok("Status updated.");
+    }
+
 }

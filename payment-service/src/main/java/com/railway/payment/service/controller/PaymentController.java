@@ -40,8 +40,21 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN)
                     .body(new PaymentResponse("You are not authorized to make this payment.", "FAILED"));
         }
+        double expectedFare = reservation.getFare();
 
+        if (paymentRequest.getAmount() < expectedFare || paymentRequest.getAmount() > expectedFare) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new PaymentResponse("Invalid amount. Please pay ₹" + expectedFare, "FAILED"));
+        }
         PaymentResponse response = paymentService.processPayment(paymentRequest);
+
+
+        if ("SUCCESS".equalsIgnoreCase(response.getStatus())) {
+            reservationClient.updateStatus(paymentRequest.getReservationId());
+        }
+
+
+
         return ResponseEntity.ok(response);
     }
 

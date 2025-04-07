@@ -32,6 +32,8 @@ public class Reservation {
     @Column(unique = true)
     private String pnr;
 
+    @Column(nullable = false)
+    private double fare;
 
     @CreationTimestamp
     private LocalDate reservationDate;

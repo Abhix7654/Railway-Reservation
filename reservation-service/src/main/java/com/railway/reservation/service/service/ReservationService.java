@@ -10,4 +10,5 @@ public interface ReservationService {
     Reservation getReservationById(Long id);
     List<Reservation> getAllReservations();
     String cancelReservation(Long id);
+     void updateStatusAfterPayment(Long id);
 }
